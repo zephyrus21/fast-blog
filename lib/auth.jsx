@@ -85,10 +85,8 @@ function useProvideAuth() {
   const signout = () => {
     Router.push('/');
 
-    return firebase
-      .auth()
-      .signOut()
-      .then(() => handleUser(false));
+    return firebase.auth().signOut();
+    // .then(() => handleUser(false));
   };
 
   // useEffect(() => {

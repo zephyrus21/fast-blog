@@ -13,6 +13,7 @@ export default function Home() {
       </Head>
       <button onClick={(e) => auth.signinWithGitHub()}>Sign In</button>
       <div>{auth?.user?.email}</div>
+      {auth?.user && <button onClick={(e) => auth.signout()}>Sign Out</button>}
     </div>
   );
 }
