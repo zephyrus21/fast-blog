@@ -1,3 +1,4 @@
+import { Button, Heading, Text } from '@chakra-ui/core';
 import { useAuth } from '../lib/auth';
 
 export default function Home() {
@@ -5,11 +6,11 @@ export default function Home() {
 
   return (
     <div>
-      <div>{auth.user?.email}</div>
+      <Text>{auth.user?.email}</Text>
       {auth.user ? (
-        <button onClick={(e) => auth.signout()}>Sign Out</button>
+        <Button onClick={(e) => auth.signout()}>Sign Out</Button>
       ) : (
-        <button onClick={(e) => auth.signinWithGitHub()}>Sign In</button>
+        <Button onClick={(e) => auth.signinWithGitHub()}>Sign In</Button>
       )}
     </div>
   );
