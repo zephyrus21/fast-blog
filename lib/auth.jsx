@@ -3,7 +3,7 @@ import Router from 'next/router';
 // import cookie from 'js-cookie';
 
 import firebase from './firebase';
-// import { createUser } from './db';
+import { createUser } from './db';
 
 const authContext = createContext();
 
@@ -23,9 +23,9 @@ function useProvideAuth() {
   const handleUser = async (rawUser) => {
     if (rawUser) {
       const user = await formatUser(rawUser);
-      const { token, ...userWithoutToken } = user;
+      // const { token, ...userWithoutToken } = user;
 
-      createUser(user.uid, userWithoutToken);
+      createUser(user.uid, user);
       setUser(user);
 
       // cookie.set('fast-feedback-auth', true, {
@@ -60,8 +60,7 @@ function useProvideAuth() {
       .auth()
       .signInWithPopup(new firebase.auth.GithubAuthProvider())
       .then((response) => {
-        // handleUser(response.user);
-        setUser(response.user);
+        handleUser(response.user);
         if (redirect) {
           Router.push(redirect);
         }
@@ -85,8 +84,10 @@ function useProvideAuth() {
   const signout = () => {
     Router.push('/');
 
-    return firebase.auth().signOut();
-    // .then(() => handleUser(false));
+    return firebase
+      .auth()
+      .signOut()
+      .then(() => handleUser(false));
   };
 
   // useEffect(() => {
@@ -105,22 +106,22 @@ function useProvideAuth() {
   };
 }
 
-// const getStripeRole = async () => {
-//   await firebase.auth().currentUser.getIdToken(true);
-//   const decodedToken = await firebase.auth().currentUser.getIdTokenResult();
+const getStripeRole = async () => {
+  await firebase.auth().currentUser.getIdToken(true);
+  const decodedToken = await firebase.auth().currentUser.getIdTokenResult();
 
-//   return decodedToken.claims.stripeRole || 'free';
-// };
+  return decodedToken.claims.stripeRole || 'free';
+};
 
-// const formatUser = async (user) => {
-//   const token = await user.getIdToken();
-//   return {
-//     uid: user.uid,
-//     email: user.email,
-//     name: user.displayName,
-//     provider: user.providerData[0].providerId,
-//     photoUrl: user.photoURL,
-//     stripeRole: await getStripeRole(),
-//     token,
-//   };
-// };
+const formatUser = async (user) => {
+  // const token = await user.getIdToken();
+  return {
+    uid: user.uid,
+    email: user.email,
+    name: user.displayName,
+    provider: user.providerData[0].providerId,
+    photoUrl: user.photoURL,
+    // stripeRole: await getStripeRole(),
+    // token,
+  };
+};
