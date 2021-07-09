@@ -15,7 +15,7 @@ import { useAuth } from '../lib/auth';
 const DashboardShell = ({ children }) => {
   const { user } = useAuth();
   return (
-    <Box backgroundColor='gray.100' h='100vh'>
+    <Box backgroundColor='gray.100' h='100vh' w='full'>
       <Flex backgroundColor='white' mb={16} w='full'>
         <Flex
           alignItems='center'
